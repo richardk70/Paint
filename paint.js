@@ -246,9 +246,7 @@ text.font = 'Arial';
 // CLEAN UP LISTENERS
 function cleanAll(){
     // release SPRAY event listeners
-    tempCanvas.removeEventListener('mousedown', sprayDown );
-    tempCanvas.removeEventListener('mousemove', sprayDrag );
-    tempCanvas.removeEventListener('mouseup', sprayRelease );
+    tempCanvas.removeEventListener('mousedown', drawSpray );
     // release FILL 
     tempCanvas.removeEventListener('click', startFill);
     // release LINE and ARC event listeners
@@ -266,52 +264,41 @@ function cleanAll(){
 
 // SPRAY ///////////////////////////////////////
 function loadSpray(){
-    console.log(isDown);
-    var timeout = 0;
+    var timeout = 0, x = 0, y = 0;
     // show color
     pickerColor.value = spray.color;
-    tempCanvas.addEventListener('mousedown', sprayDown );
+    tempCanvas.addEventListener('mousedown', drawSpray ); 
 }
 
-function sprayDown(e){
-    isDown = true;
-    tempCanvas.addEventListener('mousemove', sprayDrag );
-    tempCanvas.addEventListener('mouseup', sprayRelease );
-}
+function drawSpray(e, timeout){
+    ctx.lineJoin = ctx.lineCap = 'round';
+    var x = spray.x = Math.floor(e.x - box.left);
+    var y = spray.y = Math.floor(e.y - box.top);
+    var color = hex2RGB(pickerColor.value);
 
-function sprayDrag(e, timeout){
-    if (isDown){
-        ctx2.lineJoin = ctx.lineCap = 'round';
-        x = spray.x = [Math.floor(e.clientX - box.left)];
-        y = spray.y = [Math.floor(e.clientY - box.top)];
-        var color = hex2RGB(pickerColor.value);
-        timeout = setTimeout(function draw(){
-            for (var i = 50; i--; ){
-                var angle = getRandomFloat(0, Math.PI*2);
-                var radius = getRandomFloat(0, toolSize);
-                ctx2.fillStyle = 'rgba(' + color + ',' + activeTool.opacity + ')';
-                ctx2.fillRect(
-                    x[0] + radius * Math.cos(angle),
-                    y[0] + radius * Math.sin(angle) - 8,
-                    1,1);
-                }
+    timeout = setTimeout(function draw(){
+        for (var i = 50; i--; ){
+            var angle = getRandomFloat(0, Math.PI*2);
+            var radius = getRandomFloat(0, toolSize);
+            ctx.fillStyle = 'rgba(' + color + ',' + activeTool.opacity + ')';
+            ctx.fillRect(
+                x + radius * Math.cos(angle),
+                y + radius * Math.sin(angle),
+                1,1);
+            }
 
             if (!timeout) return;
             timeout = setTimeout(draw, 50);
         }, 50);
-    }
+    tempCanvas.addEventListener('mousemove', (e)=>{
+        x = spray.x = Math.floor(e.x - box.left);
+        y = spray.y = Math.floor(e.y - box.top);
+    });
+    tempCanvas.addEventListener('mouseup', ()=>{
+        clearTimeout(timeout);
+        backToDefault();
+    });
 }
-
-function sprayRelease(e, timeout){
-    isDown = false;
-    clearTimeout(timeout);
-    backToDefault();
-    // copy the ctx2 canvas to the ctx canvas
-    timeout = 0;
-    ctx.drawImage(ctx2.canvas, 0, 0);
-}
-
-
 
 // FILL ////////////////////////////////////////////////////////////
 
@@ -401,6 +388,7 @@ function fillDown(){
         if (checkLeft()){
             pixelStack.push([fillX - 1, fillY]);
         }
+        console.log(pixelStack.length);
         fillY = fillY + 1; // move down a pixel
         fillPixel();
     }
