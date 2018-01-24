@@ -1,0 +1,136 @@
+body{
+    font-family: sans-serif;
+}
+#container {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    width: 664px;
+}
+
+.absolute{
+    position: absolute;
+    left: 66px;
+}
+
+#top-bar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#top-bar span{
+    flex: 1;
+    text-align: center;
+    padding-left: 40px;
+}
+
+#top-bar span:first-child{
+    flex: 3;
+}
+
+#horiz{
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#custom{
+    flex: 1;
+}
+
+#toolbar {
+    flex: 1;
+    background: #ccc;
+    border: 1px solid black;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    max-width: 65px;
+}
+
+.icon{
+    flex: 1;
+    width: 65px; height: 65px;
+    background-size: 65px 65px;
+    background-repeat: no-repeat;
+}
+
+#iBrush{
+    background-image: url('Images/brush.jpg');
+}
+
+#iPencil{
+    background-image: url('Images/pencil.jpg');
+}
+#iSpray{
+    background-image: url('Images/spray.jpg');
+}
+#iText{
+    background-image: url('Images/text.jpg');
+}
+#iLine{
+    background-image: url('Images/line.jpg');
+}
+#iArc{
+    background-image: url('Images/arc.jpg');
+}
+#iErase{
+    background-image: url('Images/eraser.jpg');
+}
+#iFill{
+    background-image: url('Images/fill.jpg');
+}
+#iPick{
+    background-image: url('Images/picker.jpg');
+}
+
+#mainCanvas{
+    border: 1px solid black;
+    background: none;
+    width: 600px;
+    height: 585px;
+    cursor: crosshair;
+}
+
+#tempCanvas{
+    background: none;
+    width: 600px;
+    height: 585px;
+    border: 1px solid black;
+    cursor: crosshair;
+}
+
+#custom{
+    width: 100%;
+    height: 140px;
+    border: 1px solid black;
+    display: block;
+    text-align: left;
+    display: flex;
+}
+
+#custom span{
+    flex: 1;
+    padding: 10px;
+}
+
+.front{
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    width: 600px;
+    height: 550px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background: white;
+}
+
+#size{
+    border: 1px solid black;
+}
+
